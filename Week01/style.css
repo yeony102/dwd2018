@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Muli:200i,400,600');
-
 html {
 	margin: 0;
 	padding: 0;
-	font-family: 'Muli', sans-serif;
 }
 
 h1 {
@@ -83,12 +80,3 @@ img {
 	line-height: 35px;
 	text-align: right;
 }
-
-/*#content1 {
-	display: block;
-	width: 1204px;
-
-	margin-top: 57px;
-	margin-left: auto;
-	margin-right: auto;
-}*/
