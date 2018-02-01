@@ -11,11 +11,6 @@ app.get('/somethingelse', function (req, res) {
 	res.send('<html><body><h1>Something Else</h1></body></html>')
 })
 
-app.get('/randomfile', function (req, res) {
-	var fileToSend = "somerandomfile.txt";
-	res.sendfile(fileToSend, {root: './public'})
-})
-
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 })
