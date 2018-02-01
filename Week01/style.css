@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Muli:200i,400,600');
+
 html {
 	margin: 0;
 	padding: 0;
@@ -73,7 +75,7 @@ img {
 	margin-right: auto;
 
 	font-family: Muli;
-	font-weight: 200;
+	font-weight: 200i;
 	font-style: italic;
 	font-size: 20px;
 	color: #5F5F5F;
