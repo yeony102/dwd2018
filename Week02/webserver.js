@@ -13,7 +13,7 @@ app.get('/somethingelse', function (req, res) {
 
 app.get('/randomfile', function (req, res) {
 	var fileToSend = "somerandomfile.txt";
-	res.sendfile(fileToSend, {root: './public'}); 
+	res.sendfile(fileToSend, {root: './public'})
 })
 
 app.listen(3000, function () {
