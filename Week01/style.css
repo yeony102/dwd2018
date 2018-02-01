@@ -73,7 +73,8 @@ img {
 	margin-right: auto;
 
 	font-family: Muli;
-	font-weight: 200i;
+	font-weight: 200;
+	font-style: italic;
 	font-size: 20px;
 	color: #5F5F5F;
 	letter-spacing: 0;
