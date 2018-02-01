@@ -1,0 +1,88 @@
+html {
+	margin: 0;
+	padding: 0;
+	font-family: 'Muli', sans-serif;
+}
+
+h1 {
+	/* QUOTES & FABLES: */
+	font-family: Muli-Black;
+	font-size: 48px;
+	color: #000000;
+	letter-spacing: 0;
+	line-height: 35px;
+	text-align: center;
+	margin-top: 104px;
+	margin-bottom: 104px;
+}
+
+nav {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100px;
+}
+
+img {
+	display: inline-block;
+	margin-right: 20px;
+	width: 10px;
+	height: 10px;
+}
+
+.page-num {
+	display:block;
+	width: 1204px;
+
+	margin-top: 104px;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*margin-left: 118px;*/
+	font-family: Muli-Black;
+	font-size: 48px;
+	color: #5F5F5F;
+	letter-spacing: 0;
+	line-height: 35px;
+	text-align: left;
+}
+
+.content {
+	display: block;
+	width: 1204px;
+
+	margin-top: 57px;
+	margin-left: auto;
+	margin-right: auto;
+
+	font-family: Muli-SemiBold;
+	font-size: 30px;
+	color: #5F5F5F;
+	letter-spacing: 0;
+	line-height: 35px;
+}
+
+.ref {
+	display: block;
+	width: 1204px;
+
+	margin-top: 72px;
+	margin-left: auto;
+	margin-right: auto;
+
+	font-family: Muli-ExtraLightItalic;
+	font-size: 20px;
+	color: #5F5F5F;
+	letter-spacing: 0;
+	line-height: 35px;
+	text-align: right;
+}
+
+/*#content1 {
+	display: block;
+	width: 1204px;
+
+	margin-top: 57px;
+	margin-left: auto;
+	margin-right: auto;
+}*/
