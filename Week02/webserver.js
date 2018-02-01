@@ -32,7 +32,7 @@ app.get('/formpost', function (req, res) {
 
 app.get('/display', function (req, res) {
 	var html = "<html><body>";
-	for(let i=0; i<archive.length; i++) {
+	for(var i=0; i<archive.length; i++) {
 		html = html + archive[i] + "<br>";
 	}
 	html = html + "</body></html>";
