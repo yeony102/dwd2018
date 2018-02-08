@@ -21,10 +21,11 @@ app.get('/areyouhappy', function (req, res) {
 
 app.get('/iamhappy', function (req, res) {
 
-	var i = Math.floor(Math.random(smallHappiness.length-1));
-	var html = "<html><body><h1><i>"
-//	var html ="<html><body><div style=\"width: 50%; height: 50%; margin: auto; text-align:center; font-family:san-serif;\"><h1>"
-	html = html + smallHappiness[i] + "</i> makes someone happy.</h1></body></html>"
+	var html = "<html><body><h1>";
+	for(var i=0; i<smallHappiness.length; i++) {
+		html = html + smallHappiness[i] + "<br>";
+	}
+	html = html + "</body></html>";
 	res.send(html);
 })
 
