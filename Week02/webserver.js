@@ -10,7 +10,7 @@ app.listen(3000, function () {
 })
 
 
-var smallHappiness = ["Scone with cream and jam", "", ""];
+var smallHappiness = ["A Scone with Jam and Cream", "Honey Nut Cereal", "Belgian Beers"];
 
 app.get('/areyouhappy', function (req, res) {
 	var text = req.query.textfield;
@@ -22,9 +22,9 @@ app.get('/areyouhappy', function (req, res) {
 app.get('/iamhappy', function (req, res) {
 
 	var i = Math.floor(Math.random(smallHappiness.length-1));
-	var html = "<html><body><h1>"
+	var html = "<html><body><h1><i>"
 //	var html ="<html><body><div style=\"width: 50%; height: 50%; margin: auto; text-align:center; font-family:san-serif;\"><h1>"
-	html = html + smallHappiness[i] + " is someone's small happiness.</h1></body></html>"
+	html = html + smallHappiness[i] + "</i> is someone's small happiness.</h1></body></html>"
 	res.send(html);
 })
 
