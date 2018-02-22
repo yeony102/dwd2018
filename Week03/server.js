@@ -78,7 +78,7 @@ app.post('/formpost', function (req, res) {
 	db.submission.save()({"submission":req.body.textfield}, function(err, saved) {
   		if( err || !saved ) console.log("Not saved");
   		else console.log("Saved");
-  	}
+  	});
 
 });
 
