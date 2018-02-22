@@ -1,0 +1,30 @@
+<html>
+<head>
+	<title>Small things that make people happy</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript">
+		function setup() {
+			var datafromserver = "<%=dbdata%>";
+		}
+		window.addEventListener('load', setup);
+	</script>
+</head>
+<body>
+	<% var len = dbdata.length; %>
+
+	<div class="ourbox">
+		<div class="yourbox"><h2><span class="data"><%= dbdata[len-1].happy %></span> makes you happy!</h2></div>
+		<% if(len>1) { %>
+		<div class="otherbox">
+			<h2>The things that make others happy are...</h2> 	
+			<% for(var i=0; i<len-1; i++) { %>
+				<p><span class="data"><%= dbdata[i].happy %></span></p>
+			<% } %>
+			</div>
+		<% } %>
+	</div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,46 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Open Sans', sans-serif;;
+}
+
+body {
+	background-color: lightgrey;
+}
+
+.ourbox {
+	float: left;
+	width: 50%;
+	margin: 20px, auto;
+}
+
+.yourbox {
+	float: left;
+	width: 95%;
+	margin:; auto;
+}
+
+.otherbox {
+	float: left;
+	width: 95%;
+	margin: auto;
+}
+
+h2 {
+	font-size: 30pt;
+	font-weight: 800;
+	color: yellow;
+	text-align: center;
+}
+
+p {
+	text-align: center;
+}
+
+
+
+.data {
+	font-style: italic;
+	font-weight: 200;
+	color: white;
+}
