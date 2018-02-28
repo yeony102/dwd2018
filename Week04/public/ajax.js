@@ -5,7 +5,7 @@ var img = document.querySelector('img');
 $(document).ready(function(){
 				$.ajax({
 				  url: api+q,
-				  dataType: 'jsonp',
+				  dataType: 'json',
 				  success: function(giphy) {
 					img.src = giphy.data[0].images.fixed_height.url;
 				  },
