@@ -1,2 +1,2 @@
 # Week06: Final Project
-* http://www.yeonheelee.com/final-project-idea-2/
+* http://yhl438.itp.io:8000/
