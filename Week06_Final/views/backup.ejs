@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head> 
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Mapsta</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<!-- <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"> -->
+	</head>
+
+	<body>
+		<header>
+			<div class="appTitle">Mapsta</div>
+<!-- 			<div class="form">
+				<form method="GET" action="/result">
+					<input type="text" name="searchfield" size = "25" value="" />
+				</form>
+			</div> -->
+		</header>
+		<div id="map">
+		</div>
+		<div id="thumbnails">
+			<div id="thumbContainer"></div>
+		</div>
+		
+    	<script>
+
+    		// https://stackoverflow.com/questions/16098397/pass-variables-to-javascript-in-expressjs
+    		function htmlDecode(input){
+			    var e = document.createElement('div');
+			    e.innerHTML = input;
+			    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+			 }
+
+    		var ig = JSON.parse(htmlDecode("<%= JSON.stringify(instaAuth) %>"));
+
+			console.log("Loading...");	
+
+			var map;
+			var marker = [];
+			var media;
+
+			var latlngCtr = {
+				lat: 19.71388249013611,
+				lng: 9.209659489448029
+			};
+
+			// https://developers.google.com/maps/documentation/javascript/
+			function initMap() {
+				map = new google.maps.Map(document.getElementById('map'), {
+					'center' : latlngCtr,
+					'zoom' : 3,
+					'mapTypeId' : google.maps.MapTypeId.ROADMAP,
+					'draggable' : true,
+					'scrollwheel' : true
+				});
+
+				// map.data.setStyle(function() {
+		  //         return {
+		  //           icon: getCircle()
+		  //         };
+		  //       });
+			}
+
+			// function getCircle() {
+		 //        return {
+		 //          path: google.maps.SymbolPath.CIRCLE,
+		 //          fillColor: 'red',
+		 //          fillOpacity: .2,
+		 //          scale: 2,
+		 //          strokeColor: 'white',
+		 //          strokeWeight: .5
+		 //        };
+		 //     }
+
+
+			$(document).ready(function(){
+				console.log("The document is ready.");
+				app.initialize();
+			});
+				
+			var app = {
+				initialize: function() {
+					app.getInstagram();
+				},
+
+				getInstagram: function() {
+
+					var instaAPI = "https://api.instagram.com/v1/users/self/media/recent/?access_token=" + ig.access_token;
+					// https://api.instagram.com/v1/users/self/media/recent/?access_token=46081876.90e3593.b8138ed621a84d6daf8925aefaa961ec&min_id=1566752149660319129
+
+					$.ajax({
+						url: instaAPI,
+						type: 'GET',
+						dataType: 'json',
+						error: function(err){
+							console.log(err);
+						},
+						success: function(res){
+
+							console.log("Got the data");
+							media = res.data;
+							console.log(media.length);
+
+							var geotags = [];
+
+							var thumb = document.querySelector('#thumbContainer');
+							var html = '';
+
+							for(var i=0; i<media.length; i++) {
+								html += '<div class="dummyImg"><img src="' + media[i].images.thumbnail.url + '"></div>';
+							}
+							thumb.innerHTML = html;
+
+							for(var i=0; i<media.length; i++) {
+								geotags.push({ "lat" : media[i].location.latitude, "lng" : media[i].location.longitude });
+							}
+
+							app.markGoogleMap(geotags);
+						}
+					});
+				},
+
+				markGoogleMap: function(location) {
+			
+
+					for(var i=0; i<location.length; i++) {
+						// map.data.add(location[i]);
+						marker[i] = new google.maps.Marker({
+							'map' : map,
+							'position' : location[i],
+							'animation' : google.maps.Animation.DROP
+						});
+					}
+
+					// map.data.setStyle({
+					//   path: google.maps.SymbolPath.CIRCLE,
+			  //         fillColor: 'red',
+			  //         fillOpacity: .2,
+			  //         scale: 10,
+			  //         strokeColor: 'white',
+			  //         strokeWeight: .5
+					// });
+				}
+
+			}
+
+		</script>
+
+		<!-- <script type="text/javascript" src="script.js"></script> -->
+		<script id="mapkey" src="https://maps.googleapis.com/maps/api/js?key=<%=gmapKey%>&callback=initMap" async defer></script>
+    	
+		
+
+	</body>
+</html>
+
