@@ -14,6 +14,8 @@ var mongojs = require('mongojs');
 
 var db = mongojs(config.db.username+":"+config.db.password+"@ds217898.mlab.com:17898/dwd2018", ["myInstagram"]);
 
+var instaDB = [];
+
 
 app.use(express.static('public'));
 
@@ -25,8 +27,8 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 instagram.use({
-	client_id: config.insta.clientId,
-	client_secret: config.insta.clientSecret
+  client_id: config.insta.clientId,
+  client_secret: config.insta.clientSecret
 });
 
 //instagram.use({ access_token: '46081876.90e3593.b8138ed621a84d6daf8925aefaa961ec'});
@@ -42,12 +44,12 @@ exports.handleauth = function(req, res) {
   instagram.authorize_user(req.query.code, redirectUri, function(err, result) {
 
     if (err) {
-      console.log(err.body);
+      console.log("Failed to get the access token");
       res.send("Didn't work");
     } else {
-      console.log("Access token acquired");
+      console.log("successfully got the access token");
 
-      // console.log('Access token: ' + result.access_token);
+       console.log('Access token: ' + result.access_token);
       // console.log('User id: ' + result.user.id);
       // console.log('User name: ' + result.user.username);
       // console.log('Profile Picture: ' + result.user.profile_picture);
@@ -82,18 +84,26 @@ exports.handleauth = function(req, res) {
         } else {
           // console.log(medias);
           for(var i=0; i<medias.length; i++) {
-            db.myInstagram.find({ "id" : medias[i].id }, function(err_find, saved_find) {
+            var idnum = medias[i].id;
+            //console.log("Got media(id: " + idnum + ") from your Instagram");
+            
+            db.myInstagram.find({ "id" : idnum }, function(err_find, saved_find) {
+
               if(err_find) { 
-                console.log("MongoDB: Failed to search") 
+                console.log("MongoDB: Failed to search");
+
               } else if(!saved_find) {
-                var id = medias[i].id;
+
+                console.log("Saving media(id: " + idnum + ")...");
+
+                var id = idnum;
                 var thumb = medias[i].images.thumbnail.url;
                 var std = medias[i].images.standard_resolution.url;
                 var loc = {
                   "latitude" : parseFloat(medias[i].location.latitude),
                   "longitude" : parseFloat(medias[i].location.longitude),
                   "name" : medias[i].location.name
-                }
+                };
 
                 db.myInstagram.save({
                   "id" : id,
@@ -106,6 +116,7 @@ exports.handleauth = function(req, res) {
                 });   // save data
               } // if the data isn't in DB yet
               else {
+                //console.log("Found the media(id: " + idnum + "). Not saving.");
                 //break;
               } // if the data is found in DB
             }); // find data
@@ -115,7 +126,9 @@ exports.handleauth = function(req, res) {
             if(err_pull || !saved_pull) {
               console.log("MongoDB: Failed to pull all records");
             } else {
-              res.render('index.ejs', { dbdata: saved_pull , gmapKey: config.gmap.key } );
+              instaDB = saved_pull;
+              res.redirect('/mapsta');
+              //res.render('index.ejs', { dbdata: saved_pull , gmapKey: config.gmap.key } );
             }
           }); // pull all records
             
@@ -131,11 +144,19 @@ exports.handleauth = function(req, res) {
 
 };
 
+
+
 // This is where you would initially send users to authorize 
 app.get('/', exports.authorize_user);
 
 // This is your redirect URI 
 app.get('/handleauth', exports.handleauth);
+
+app.get('/mapsta', function (req, res) {
+
+  res.render('index.ejs', { dbdata: instaDB, gmapKey: config.gmap.key });
+
+});
 
 
 
