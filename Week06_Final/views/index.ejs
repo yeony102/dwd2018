@@ -12,16 +12,47 @@
 	<body>
 		<header>
 			<div class="appTitle">Mapsta</div>
-<!-- 			<div class="form">
-				<form method="GET" action="/result">
-					<input type="text" name="searchfield" size = "25" value="" />
+			<div class="refreshBtn">
+				<form method="GET" action="/refresh">
+					<input type="submit" name="refresh" value=""/>
 				</form>
-			</div> -->
+			</div>
 		</header>
 		<div id="map">
 		</div>
-		<div id="thumbnails">
-			<div id="thumbContainer"></div>
+
+		<div id="carousel">
+
+			<div class="tmb-nav" id="nav-left">
+				<div class="nav-button" id="first" data-avail="false">
+					<div class="double-arrows">
+						<div class="arrow-left"></div><div class="arrow-left"></div>
+					</div>
+				</div>
+				<div class="nav-button" id="prev" data-avail="false">
+					<div class="single-arrow">
+						<div class="arrow-left"></div>
+					</div>
+				</div>
+			</div>
+
+			<div id="thumbnails">
+				<div id="thumbContainer"></div>
+			</div>
+
+			<div class="tmb-nav" id="nav-right">
+				<div class="nav-button" id="next" data-avail="true">
+					<div class="single-arrow">
+						<div class="arrow-right"></div>
+					</div>
+				</div>
+				<div class="nav-button" id="last" data-avail="true">
+					<div class="double-arrows">
+						<div class="arrow-right"></div><div class="arrow-right"></div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 		<script>
@@ -43,7 +74,9 @@
 
 			var map;
 			var marker = [];
-			var media;
+			var popupContent = [];
+			var infoWindows = [];
+	//		var media;
 
 			var latlngCtr = {
 				lat: 30.71388249013611,
@@ -52,6 +85,12 @@
 
 			// https://developers.google.com/maps/documentation/javascript/
 			function initMap() {
+				app.getInstagram();
+
+				// var marker = [];
+				// var popupContent = [];
+				// var infoWindows = [];
+
 				map = new google.maps.Map(document.getElementById('map'), {
 					'center' : latlngCtr,
 					'zoom' : 3,
@@ -59,14 +98,44 @@
 					'draggable' : true,
 					'scrollwheel' : true
 				});
+
+				for(let i=0; i<ig.length; i++) {
+
+					marker[i] = new google.maps.Marker({
+						"map" : map,
+						"position" : {
+							"lat" : parseFloat(ig[i].location.latitude), 
+							"lng" : parseFloat(ig[i].location.longitude) 
+						},
+						"animation" : google.maps.Animation.DROP,
+						"title" : ig[i].location.name
+					});
+
+					popupContent[i] = '<p class="loca_name">' + ig[i].location.name +'</p>';
+					popupContent[i] += '<div class="originImg"><img src="' + ig[i].standard + '" width="600" height="600"></div>';
+
+					 
+					// console.log("markers and contents are all set");
+
+					infoWindows[i] = new google.maps.InfoWindow({
+						"content" : popupContent[i]
+					});
+
+					marker[i].addListener('click', function() {
+						console.log(infoWindows[i]);
+			          	infoWindows[i].open(map, marker[i]);
+			        });
+
+				}
+
 			}
 
-			window.addEventListener('load', function() {
+/*			window.addEventListener('load', function() {
 
 				console.log("The document is ready.");
 				app.initialize();
 				
-			}, false);
+			}, false);*/
 				
 			var app = {
 				initialize: function() {
@@ -76,41 +145,60 @@
 				getInstagram: function() {
 
 					console.log("loading instagram...");
-					console.log(ig.length);
+					var num = ig.length;
+					console.log(num);
 
-					var geotags = [];
+					// var geotags = [];
 
 					var thumb = document.querySelector('#thumbContainer');
+
+					thumb.style.width = ((num+1) * 100 + 5*100 + 100) + 'px';
 					var html = '';
 
-					for(var i=0; i<ig.length; i++) {
-						html += '<div class="dummyImg"><img src="' + ig[i].thumbnail + '"></div>';
+					for(var i=0; i<num; i++) {
+						html += '<div class="dummyImg"><img data-idx="' + i + '" src="' + ig[i].thumbnail + '"></div>';
 					}
 					thumb.innerHTML = html;
 
-					for(var i=0; i<ig.length; i++) {
-						geotags[i] = { 
-							"lat" : parseFloat(ig[i].location.latitude), 
-							"lng" : parseFloat(ig[i].location.longitude) 
-						};
-					//	console.log(ig[i].location.latitude);
-					}
-
-					app.markGoogleMap(geotags);
+					//app.markGoogleMap();
 				},
 
-				markGoogleMap: function(location) {
-			
+				/*markGoogleMap: function() {
 
-					for(var i=0; i<location.length; i++) {
+					// var popupContent = [];
+					// var infoWindows = [];
+
+					for(var i=0; i<ig.length; i++) {
 						// map.data.add(location[i]);
-						console.log(location[i].lat);
+						//console.log(location[i].lat);
 						marker[i] = new google.maps.Marker({
 							"map" : map,
-							"position" : location[i],
-							"animation" : google.maps.Animation.DROP
+							"position" : {
+								"lat" : parseFloat(ig[i].location.latitude), 
+								"lng" : parseFloat(ig[i].location.longitude) 
+							},
+							"animation" : google.maps.Animation.DROP,
+							"title" : ig[i].location.name
 						});
-					}
+
+						popupContent[i] = '<p class="loca_name">' + ig[i].location.name +'</p>';
+						popupContent[i] += '<div class="originImg"><img src="' + ig[i].standard + '"></div>';
+
+					 
+					// console.log("markers and contents are all set");
+
+
+						infoWindows[i] = new google.maps.InfoWindow({
+							content : 'test'//popupContent[i]
+						});
+						console.log(infoWindows[i]);
+
+						marker[i].addListener('click', function() {
+							console.log(infoWindows[i]);
+				          	infoWindows[i].open(map, marker[i]);
+				        });
+					//}
+					//console.log("Listeners are all set");
 
 					// map.data.setStyle({
 					//   path: google.maps.SymbolPath.CIRCLE,
@@ -120,12 +208,14 @@
 			  //         strokeColor: 'white',
 			  //         strokeWeight: .5
 					// });
-				}
+					}
+				}*/
 
 			}
 
 		</script>
-		<script id="mapkey" src="https://maps.googleapis.com/maps/api/js?key=<%=gmapKey%>&callback=initMap" async defer></script>
+		<script async defer id="mapkey" src="https://maps.googleapis.com/maps/api/js?key=<%=gmapKey%>&callback=initMap" ></script>
+		<script src="script.js"></script>
 	</body>
 	
 </html>
